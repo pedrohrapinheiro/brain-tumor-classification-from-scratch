@@ -1,135 +1,192 @@
-# brain-tumor-classification-from-scratch
-Brain Tumor Classification from Scratch
+# Brain Tumor Classification from Scratch
 
-Machine learning project for brain tumor classification using Logistic Regression implemented from scratch with NumPy.
+A machine learning project focused on implementing **Logistic Regression from scratch using NumPy** for binary classification of brain tumor images.
 
-The project focuses on implementing the main components of Logistic Regression manually rather than using a pre-built machine learning implementation.
+The project was developed to understand the mathematical foundations of Logistic Regression by implementing the model, cost function, gradients, regularization, and optimization process without relying on high-level machine learning frameworks.
 
-Objective
+---
 
-Classify brain tumor images using statistical and texture features extracted from the images.
+## Overview
 
-The implementation covers:
+The pipeline transforms extracted image characteristics into a binary classification:
 
-Data preprocessing
-Feature extraction
-Feature standardization
+```text
+Brain MRI Image
+       │
+       ▼
+Feature Extraction
+       │
+       ▼
+Statistical & Texture Features
+       │
+       ▼
+Standardization
+       │
+       ▼
 Logistic Regression
-Sigmoid activation
-Binary cross-entropy cost function
-L2 regularization
-Gradient computation
-Gradient descent
-Model prediction
-Accuracy evaluation
-Prediction visualization
-Dataset
+       │
+       ▼
+Binary Classification
+       │
+       ▼
+Model Evaluation
+```
 
-The dataset contains brain tumor images represented through extracted statistical and texture features.
+## Features
 
-The features used in the model are:
+The model uses statistical and texture descriptors extracted from the images:
 
-Mean
-Variance
-Standard Deviation
-Entropy
-Skewness
-Kurtosis
-Contrast
-Energy
-ASM
-Homogeneity
-Dissimilarity
-Correlation
-Model
+| Feature            | Description                             |
+| ------------------ | --------------------------------------- |
+| Mean               | Average pixel intensity                 |
+| Variance           | Pixel intensity dispersion              |
+| Standard Deviation | Spread of pixel intensities             |
+| Entropy            | Information content                     |
+| Skewness           | Distribution asymmetry                  |
+| Kurtosis           | Distribution shape                      |
+| Contrast           | Local intensity variation               |
+| Energy             | Texture uniformity                      |
+| ASM                | Angular Second Moment                   |
+| Homogeneity        | Similarity of neighboring pixels        |
+| Dissimilarity      | Local pixel differences                 |
+| Correlation        | Relationship between neighboring pixels |
 
-The Logistic Regression model calculates:
+## Logistic Regression
 
-[
+The model calculates the linear combination:
+
+$$
 z = w^T x + b
-]
+$$
 
-The sigmoid function converts the result into a probability:
+and applies the sigmoid function:
 
-[
+$$
 \sigma(z) = \frac{1}{1 + e^{-z}}
-]
+$$
 
-A threshold of 0.5 is used to convert the probability into a binary classification.
+The resulting probability is converted into a binary prediction using a threshold of `0.5`.
 
+```python
 prediction = (probability >= 0.5).astype(int)
-Cost Function
+```
 
-The model uses binary cross-entropy with L2 regularization:
+## Cost Function
 
-[
+The implementation uses binary cross-entropy with L2 regularization:
+
+$$
 J(w,b) =
 -\frac{1}{m}
 \sum_{i=1}^{m}
-[y_i\log(g_i)+(1-y_i)\log(1-g_i)]
+\left[
+y_i\log(g_i) +
+(1-y_i)\log(1-g_i)
+\right]
 +
 \frac{\lambda}{2m}
 \sum_{j=1}^{n}w_j^2
-]
+$$
 
-Optimization
+The regularization term helps control the magnitude of the model weights.
 
-The parameters are optimized using gradient descent:
+## Optimization
 
+The parameters are optimized using gradient descent.
+
+```python
 w = w - alpha * dw
 b = b - alpha * db
+```
 
-The gradients are calculated manually using NumPy.
+The gradients are calculated manually using NumPy, providing a direct implementation of the optimization process.
 
-Data Preprocessing
+## Data Preprocessing
 
 The dataset is shuffled and divided into training and validation sets.
 
-Feature standardization is performed using statistics calculated from the training set:
+Features are standardized using the statistics calculated from the training set:
 
+```python
 mean = np.mean(X_train, axis=0)
 std = np.std(X_train, axis=0)
 
 X_train = (X_train - mean) / std
 X_val = (X_val - mean) / std
+```
 
-The same training mean and standard deviation are applied to the validation set to avoid data leakage.
+The training statistics are reused for the validation set to prevent data leakage.
 
-Results
+## Results
 
-The current implementation achieved approximately 97% validation accuracy on the dataset.
+The current implementation achieved approximately:
 
-Accuracy is calculated by comparing the predicted labels with the actual labels:
+**97% validation accuracy**
 
+Accuracy is calculated by comparing predicted labels with the corresponding validation labels:
+
+```python
 accuracy = np.mean(y_pred == y_val)
+```
 
-Further evaluation using precision, recall, F1-score, confusion matrix, and ROC-AUC is planned.
+Accuracy is only one evaluation metric. Future iterations will include additional metrics to provide a more complete assessment of the classifier.
 
-Technologies
+## Technologies
+
+```text
 Python
-NumPy
-Pandas
-Matplotlib
-Jupyter Notebook
-Project Structure
+├── NumPy
+├── Pandas
+└── Matplotlib
+
+Development
+└── Jupyter Notebook
+```
+
+## Project Structure
+
+```text
 brain-tumor-classification-from-scratch/
 │
 ├── data/
+│   └── dataset files
+│
 ├── notebooks/
+│   └── logistic_regression.ipynb
+│
 ├── src/
+│   └── model implementation
+│
 ├── README.md
 ├── requirements.txt
 └── .gitignore
-Future Work
-Implement confusion matrix
-Add precision, recall, and F1-score
-Implement ROC-AUC evaluation
-Perform feature selection
-Tune learning rate and regularization
-Implement cross-validation
-Compare with Scikit-learn
-Test additional classification algorithms
-Explore neural network approaches
-Disclaimer
+```
+
+## Future Work
+
+* Implement confusion matrix
+* Add precision, recall, and F1-score
+* Implement ROC-AUC evaluation
+* Perform feature selection
+* Optimize learning rate and regularization
+* Implement cross-validation
+* Compare the implementation with Scikit-learn
+* Evaluate additional classification algorithms
+* Explore neural network approaches
+
+## Purpose
+
+This project is primarily an educational implementation designed to strengthen understanding of:
+
+* Supervised learning
+* Binary classification
+* Logistic Regression
+* Gradient descent
+* Regularization
+* Feature engineering
+* Model evaluation
+* Numerical computation with NumPy
+
+## Disclaimer
 
 This project is intended for educational and research purposes only. It is not a medical diagnostic system and should not be used for clinical decision-making.
